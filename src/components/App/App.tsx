@@ -2,33 +2,31 @@ import React, { useState } from 'react';
 import axios from "axios";
 import './App.scss';
 
+
 interface Iform {
-    qus: string;
-    ans1: string;
-    ans2: string;
-    ans3: string;
-    ans4: string;
-    ans5: string;
+    title: string;
+    opt: any;
 }
 
 const App = () => {
     const [form, setForm] = useState({
-        qus: '',
-        ans1: '',
-        ans2: '',
-        ans3: '',
-        ans4: '',
-        ans5: ''
+        title: '',
+        opt: {
+
+        }
     });
     const [response, setRes] = useState({
         resp: false
     });
 
-
-    const { qus, ans1, ans2, ans3, ans4, ans5 } = form;
     let { resp } = response;
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let { opt } = form;
+
+
+    let optS:any = {};
+
+    const onChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm({
             ...form,
@@ -36,81 +34,86 @@ const App = () => {
         });
     };
 
+    const onChange2 = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        optS[Number(name)] = value;
+
+        if(Number(name) === autoincrement_count){
+            // 투표항목을 추가하는 함수를 부른다.
+
+        }
+    };
+
+
     const onSubmit = (form: Iform) => {
-        axios.post(`http://172.20.10.14:3001/`,  form )
+        let array_optS:Array<string> = []
+
+        Object.keys(optS).map((key) => {
+            array_optS.push(optS[key])
+        });
+
+        setForm({
+            ...form,
+            opt: array_optS
+        })
+
+
+        const data = {title:"sibal", opt:array_optS}
+
+        axios.post(`http://voting-vwujy.run.goorm.io/`, data  )
             .then(res => {
                 resp = res.data.success
                 setRes({
                     resp: true
                 })
+                console.log(data)
                 console.log(res.data)
             })
 
     };
-
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         onSubmit(form);
-        // setForm({
-        //     qus: '',
-        //     ans1: '',
-        //     ans2: '',
-        //     ans3: '',
-        //     ans4: '',
-        //     ans5: ''
-        // })
-
     };
 
 
-    let input1 = null;
-    let input2 = null;
-
-
-    if (ans3 !== ''){
-        input1 = <input name={'ans4'} value={ans4} onChange={onChange} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
-    }
-    if (ans4 !== ''){
-        input2 = <input name={'ans5'} value={ans5} onChange={onChange} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
-    }
-
     let btn = <button type={'submit'} className={'App_button'} onClick={handleSubmit}>등록</button>;
 
-    console.log(resp);
 
     if(resp === true){
         btn = <a href={`/vote`} className={'App_href'}>투표하러가기</a>
+        console.log(opt)
+    }
 
+    let autoincrement_count = 0;
+    const autoincrement = () => {
+        return autoincrement_count += 1;
     }
 
 
     return (
-        <form  style={{display: "flex", flexDirection: "column"}} className={'App_Form'}>
-            <input name={'qus'} value={qus} onChange={onChange} placeholder={'질문을 입력하세요.'} className={'App_input'}/>
-            <input name={'ans1'} value={ans1} onChange={onChange} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
-            <input name={'ans2'} value={ans2} onChange={onChange} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
-            <input name={'ans3'} value={ans3} onChange={onChange} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
-            {input1}
-            {input2}
-            {btn}
-        </form>
+        <>
+        <div>
+            <h1 style={{textAlign: 'center'}}>투표 하셈 수고</h1>
+        </div>
+            <form  style={{display: "flex", flexDirection: "column"}} className={'App_Form'}>
+                <input name={'title'} onChange={onChange1} placeholder={'질문을 입력하세요.'} className={'App_input'}/>
+                <input name={`${autoincrement()}`} onChange={onChange2} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
+                <input name={`${autoincrement()}`} onChange={onChange2} placeholder={'선택지를 적어주세요.'} className={'App_input'} />
+
+                {btn}
+            </form>
+        </>
     );
 
-
-    // type GreetingsProps = {
-    //     name: string;
-    //     value: string;
-    //     // id: number | undefined;
-    // };
-    //
-    // function Greetings({ name, value }: GreetingsProps) {
+    // function Greetings() {
     //     return (
-    //         <input name={name} value={value} onChange={onChange} id={'input4'} placeholder={'선택지를 적어주세요.'} className={'App_input'}/>
+    //         <input name={`${autoincrement()}`} onChange={onChange2} placeholder={'선택지를 적어주세요.'} className={'App_input'} />
     //     );
     // }
-
-
 }
+
+
 
 
 
