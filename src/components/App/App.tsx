@@ -49,7 +49,7 @@ const App = () => {
         let array_optS:Array<string> = []
 
         Object.keys(optS).map((key) => {
-            array_optS.push(optS[key])
+            return array_optS.push(optS[key])
         });
 
         setForm({
