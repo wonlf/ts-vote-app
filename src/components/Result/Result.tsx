@@ -10,7 +10,6 @@ class App extends React.Component {
     public render() {
         return (
             <div>
-                result
             </div>
         );
     }
