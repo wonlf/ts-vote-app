@@ -22,11 +22,10 @@ const Vote = () => {
 
 
     useEffect(() => {
-        let v_url:string = url.substring(23)
+        let v_url:string = url.substring(33)
         const a = v_url.replace(/[^0-9]/g,"");;
         axios.get(`http://voting-vwujy.run.goorm.io/vote/${a}`)
             .then(res => {
-                console.log(res)
                 if(res.data.success === true){
                     setRes({
                         title: res.data.title,
@@ -58,7 +57,7 @@ const Vote = () => {
 
     let { ans1_i, ans2_i, ans3_i, ans4_i } = response;
 
-    let v_url:string = url.substring(23);
+    let v_url:string = url.substring(33);
     const a = v_url.replace(/[^0-9]/g,"");
     const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -74,24 +73,22 @@ const Vote = () => {
                 break;
             case '2':
                 data.checked = ans2_i
-                break
+                break;
             case '3':
                 data.checked = ans3_i
-                break
+                break;
             case '4':
                 data.checked = ans4_i
-                break
+                break;
 
             default:
                 console.log('error')
         }
         
 
-        
-        console.log(data)
+
         axios.post(`http://voting-vwujy.run.goorm.io/select/${a}` , data)
             .then(res=> {
-                console.log(res.data)
                 setSuc({
                     success: res.data.success
                 })
@@ -113,7 +110,6 @@ const Vote = () => {
 
 
     const onChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value)
         setForm2({
             ...form2,
             checked: e.target.value

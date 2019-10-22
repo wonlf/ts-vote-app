@@ -8,7 +8,6 @@ const Root = () => {
     let url = document.URL;
     let v_url:string = url.substring(23);
     const a = v_url.replace(/[^0-9]/g,"");
-    console.log(a)
     return (
         <Router>
             <main>

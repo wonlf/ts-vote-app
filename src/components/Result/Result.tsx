@@ -20,11 +20,10 @@ const Result = () => {
 
     });
     useEffect(() => {
-        let v_url:string = url.substring(23)
+        let v_url:string = url.substring(33)
         const a = v_url.replace(/[^0-9]/g,"");
         axios.get(`http://voting-vwujy.run.goorm.io/result/${a}`)
             .then(res => {
-                console.log(res)
                 setRes({
                     title: res.data.title,
                     ans1: res.data.scoers[0].key,

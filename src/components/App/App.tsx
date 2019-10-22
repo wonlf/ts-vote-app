@@ -4,6 +4,7 @@ import './App.scss';
 import useSend from "../../hooks/useSend";
 
 
+
 interface Iform {
     title: string;
     opt: any;
@@ -52,13 +53,15 @@ const App = () => {
             title: t_name,
             opt: array_optS
         })
-
+        
+        if(array_optS[0] === null || array_optS[1] === null|| array_optS[2] === null || array_optS[3] === null){
+            alert('선택지를 비우지 마시고, 공백을 넣어주세요')
+        }
 
         const data = {title:t_name, opt:array_optS}
 
         axios.post(`http://voting-vwujy.run.goorm.io/`, data  )
             .then(res => {
-                console.log(res.data)
                 setUrl({
                     url: res.data.id
                 });
@@ -83,7 +86,6 @@ const App = () => {
 
 
     if(resp === true){
-        console.log(url)
         btn = <a href={`/v${url}`} className={'App_href'}>
             <button className={'App_button'} onClick={() => onSend(url)}>투표하러가기</button>
             </a>
