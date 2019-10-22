@@ -58,6 +58,7 @@ const App = () => {
 
         axios.post(`http://voting-vwujy.run.goorm.io/`, data  )
             .then(res => {
+                console.log(res.data)
                 setUrl({
                     url: res.data.id
                 });
